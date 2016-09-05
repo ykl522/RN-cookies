@@ -1,10 +1,10 @@
 {
-  "name": "react-native-cookies",
-  "version": "1.0.1",
+  "name": "RN-cookies",
+  "version": "1.0.2",
   "description": "Cookie manager for react native",
   "keywords": [ "react", "react native", "react-component", "cookies", "webview", "react-native" ],
   "main": "index.js",
-  "author": "@joeferraro",
+  "author": "@ykl522",
   "license": "MIT",
   "dependencies": {
     "invariant": "^2.1.0"
