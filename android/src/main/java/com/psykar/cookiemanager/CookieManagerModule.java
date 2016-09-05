@@ -1,5 +1,7 @@
 package com.psykar.cookiemanager;
 
+import android.webkit.CookieManager;
+
 import com.facebook.react.modules.network.ForwardingCookieHandler;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -21,6 +23,12 @@ import java.util.Map;
 public class CookieManagerModule extends ReactContextBaseJavaModule {
 
     private ForwardingCookieHandler cookieHandler;
+    private static final String OPTIONS_NAME = "name";
+    private static final String OPTIONS_VALUE = "value";
+    private static final String OPTIONS_DOMAIN = "domain";
+    private static final String OPTIONS_ORIGIN = "origin";
+    private static final String OPTIONS_PATH = "path";
+    private static final String OPTIONS_EXPIRATION = "expiration";
 
     public CookieManagerModule(ReactApplicationContext context) {
         super(context);
@@ -32,8 +40,35 @@ public class CookieManagerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void set(ReadableMap cookie, final Callback callback) throws Exception {
-        throw new Exception("Cannot call on android, try setFromResponse");
+    public void set(ReadableMap options, final Callback callback) throws Exception {
+        String name = null;
+        String value = null;
+        String domain = null;
+        String origin = null;
+        String path = null;
+        String expiration = null;
+        if (options.hasKey(OPTIONS_NAME)) {
+            name = options.getString(OPTIONS_NAME);
+        }
+        if (options.hasKey(OPTIONS_VALUE)) {
+            value = options.getString(OPTIONS_VALUE);
+        }
+        if (options.hasKey(OPTIONS_DOMAIN)) {
+            domain = options.getString(OPTIONS_DOMAIN);
+        }
+        if (options.hasKey(OPTIONS_ORIGIN)) {
+            origin = options.getString(OPTIONS_ORIGIN);
+        }
+        if (options.hasKey(OPTIONS_PATH)) {
+            path = options.getString(OPTIONS_PATH);
+        }
+        if (options.hasKey(OPTIONS_EXPIRATION)) {
+            expiration = options.getString(OPTIONS_EXPIRATION);
+        }
+        CookieManager.getInstance().setCookie(origin, name + "=" + value + ";"
+                + OPTIONS_PATH + "=" + path + ";"
+                + OPTIONS_EXPIRATION + "=" + expiration + ";"
+                + OPTIONS_DOMAIN + "=" + domain);
     }
 
     @ReactMethod
@@ -64,7 +99,7 @@ public class CookieManagerModule extends ReactContextBaseJavaModule {
             for (int i = 0; i < cookies.length; i++) {
                 String[] cookie = cookies[i].split("=");
                 if(cookie.length > 1) {
-                  map.putString(cookie[0].trim(), cookie[1]);
+                    map.putString(cookie[0].trim(), cookie[1]);
                 }
             }
         }
